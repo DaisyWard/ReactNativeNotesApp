@@ -3,7 +3,7 @@ import { StyleSheet, SafeAreaView, FlatList, TouchableOpacity } from 'react-nati
 import Note from '../components/Note';
 import { Entypo } from '@expo/vector-icons';
 
-const NoteList = () => {
+const NoteList = ({navigation}) => {
   const items = [
     {
       id: 1,
@@ -64,7 +64,7 @@ const NoteList = () => {
   ]
 
   const clickHandler = () => {
-    alert('Floating Button Clicked');
+    navigation.navigate('CreateNote')
   }
 
   return (
