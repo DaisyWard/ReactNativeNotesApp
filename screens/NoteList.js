@@ -1,6 +1,7 @@
 import React from 'react';
-import { StyleSheet, SafeAreaView, ScrollView, FlatList } from 'react-native';
+import { StyleSheet, SafeAreaView, FlatList, TouchableOpacity } from 'react-native';
 import Note from '../components/Note';
+import { Entypo } from '@expo/vector-icons';
 
 const NoteList = () => {
   const items = [
@@ -39,10 +40,35 @@ const NoteList = () => {
       text: 'I need to email HR about an important thing. I need to email HR about an important thing.I need to email HR about an important thing.I need to email HR about an important thing.',
       date: '12/06/2023'
     },
-  ];
+    {
+      id: 6,
+      title: 'I am a work note',
+      category: 'Work',
+      text: 'I need to email HR about an important thing. I need to email HR about an important thing.I need to email HR about an important thing.I need to email HR about an important thing.',
+      date: '12/06/2023'
+    },
+    {
+      id: 7,
+      title: 'I am a work note',
+      category: 'Work',
+      text: 'I need to email HR about an important thing. I need to email HR about an important thing.I need to email HR about an important thing.I need to email HR about an important thing.',
+      date: '12/06/2023'
+    },
+    {
+      id: 8,
+      title: 'I am a work note',
+      category: 'Work',
+      text: 'I need to email HR about an important thing. I need to email HR about an important thing.I need to email HR about an important thing.I need to email HR about an important thing.',
+      date: '12/06/2023'
+    },
+  ]
+
+  const clickHandler = () => {
+    alert('Floating Button Clicked');
+  }
 
   return (
-    <SafeAreaView>
+    <SafeAreaView style={styles.container}>
         <FlatList
           data={items}
           numColumns={2}
@@ -51,12 +77,32 @@ const NoteList = () => {
             <Note title={item.title} category={item.category} text={item.text} date={item.date} />
           )}
         />
+        <TouchableOpacity
+          activeOpacity={0.7}
+          onPress={clickHandler}
+          style={styles.touchableOpacityStyle}>
+          <Entypo name="plus" size={45} color="black" />
+        </TouchableOpacity>
     </SafeAreaView>
   );
 };
 
 export default NoteList;
 
-// const styles = StyleSheet.create({
-
-// });
+const styles = StyleSheet.create({
+  container: {
+    display: 'flex',
+    flex: 1,
+  },
+  touchableOpacityStyle: {
+    position: 'absolute',
+    width: 75,
+    height: 75,
+    backgroundColor: 'white',
+    borderRadius: 50,
+    alignItems: 'center',
+    justifyContent: 'center',
+    right: 30,
+    bottom: 30
+  }
+})
