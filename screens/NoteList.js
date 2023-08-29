@@ -1,67 +1,31 @@
-import React from 'react';
-import { StyleSheet, SafeAreaView, FlatList, TouchableOpacity } from 'react-native';
+import React, {useEffect, useState} from 'react';
+import { StyleSheet, SafeAreaView, FlatList, TouchableOpacity, Text } from 'react-native';
 import Note from '../components/Note';
 import { Entypo } from '@expo/vector-icons';
+import {API, graphqlOperation} from 'aws-amplify';
+import {listTodos} from '../src/graphql/queries';
+import { Amplify } from 'aws-amplify';
+import awsExports from '../src/aws-exports';
+Amplify.configure(awsExports);
 
-const NoteList = ({navigation}) => {
-  const items = [
-    {
-      id: 1,
-      title: 'I am a title',
-      category: 'Wishlist',
-      text: 'I am the text of the wishlist note',
-      date: '14/07/2023'
-    },
-    {
-      id: 2,
-      title: 'I am a study note',
-      category: 'Study',
-      text: 'I need to study for my final exam',
-      date: '24/07/2023'
-    },
-    {
-      id: 3,
-      title: 'I am a personal note',
-      category: 'Personal',
-      text: 'Go to Tesco to buy cheese',
-      date: '22/07/2023'
-    },
-    {
-      id: 4,
-      title: 'I\'m a second wishlist note',
-      category: 'Wishlist',
-      text: 'Go to America',
-      date: '12/06/2023'
-    },
-    {
-      id: 5,
-      title: 'I am a work note',
-      category: 'Work',
-      text: 'I need to email HR about an important thing. I need to email HR about an important thing.I need to email HR about an important thing.I need to email HR about an important thing.',
-      date: '12/06/2023'
-    },
-    {
-      id: 6,
-      title: 'I am a work note',
-      category: 'Work',
-      text: 'I need to email HR about an important thing. I need to email HR about an important thing.I need to email HR about an important thing.I need to email HR about an important thing.',
-      date: '12/06/2023'
-    },
-    {
-      id: 7,
-      title: 'I am a work note',
-      category: 'Work',
-      text: 'I need to email HR about an important thing. I need to email HR about an important thing.I need to email HR about an important thing.I need to email HR about an important thing.',
-      date: '12/06/2023'
-    },
-    {
-      id: 8,
-      title: 'I am a work note',
-      category: 'Work',
-      text: 'I need to email HR about an important thing. I need to email HR about an important thing.I need to email HR about an important thing.I need to email HR about an important thing.',
-      date: '12/06/2023'
-    },
-  ]
+const NoteList = ({navigation, route }) => {
+  const [todos, setTodos] = useState([]);
+
+  useEffect(() => {
+    fetchTodos();
+  }, []);
+
+  async function fetchTodos() {
+    try {
+      const todoData = await API.graphql(graphqlOperation(listTodos));
+
+      const todos = todoData.data.listTodos.items;
+      setTodos(todos);
+
+    } catch (err) {
+      console.log('error fetching todos', err);
+    }
+  }
 
   const clickHandler = () => {
     navigation.navigate('CreateNote')
@@ -70,18 +34,19 @@ const NoteList = ({navigation}) => {
   return (
     <SafeAreaView style={styles.container}>
         <FlatList
-          data={items}
+          data={todos}
           numColumns={2}
           keyExtractor={item => item.id}
           renderItem={({item}) => (
-            <Note title={item.title} category={item.category} text={item.text} date={item.date} />
+            <Note title={item.name} category='goose' text={item.description} date={item.updatedAt} />
           )}
         />
         <TouchableOpacity
           activeOpacity={0.7}
           onPress={clickHandler}
-          style={styles.touchableOpacityStyle}>
-          <Entypo name="plus" size={45} color="black" />
+          style={styles.touchableOpacityStyle}
+        >
+          <Entypo name='plus' size={45} color='black' />
         </TouchableOpacity>
     </SafeAreaView>
   );
