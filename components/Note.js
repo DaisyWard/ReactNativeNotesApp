@@ -1,13 +1,24 @@
-import { StyleSheet, View, Text } from "react-native"
+import { StyleSheet, Text, Pressable } from "react-native"
 
 const Note = ({ title, category, text, date }) => {
+  const openNote = () => {
+    console.log('open')
+  }
+
+  var formattedDate =
+    ("0" +  new Date(date).getUTCDate()).slice(-2) + "/" +
+    ("0" + (new Date(date).getUTCMonth() + 1)).slice(-2) + "/" +
+    new Date(date).getUTCFullYear() + " " +
+    ("0" + new Date(date).getUTCHours()).slice(-2) + ":" +
+    ("0" + new Date(date).getUTCMinutes()).slice(-2)
+
   return (
-    <View style={styles.wrapper}>
-      <Text style={styles.date}>{date}</Text>
+    <Pressable style={styles.wrapper} onPress={() => openNote()}>
+      <Text style={styles.date}>{formattedDate}</Text>
       <Text style={styles.title}>{title}</Text>
       <Text style={styles.category}>{category}</Text>
       <Text numberOfLines={2} style={styles.text}>{text}</Text>
-    </View>
+    </Pressable>
   )
 }
 
@@ -17,15 +28,15 @@ const styles = StyleSheet.create({
   wrapper: {
     flex: 0.5,
     //maxHeight: 150,
-    margin: 15,
-    borderRadius: 5,
+    margin: 3,
+    borderRadius: 10,
     padding: 15,
     backgroundColor: '#009389',
     overflow: 'hidden'
   },
   date: {
     display: 'flex',
-    alignSelf: 'flex-end',
+    //alignSelf: 'flex-end',
     color: '#fff',
     marginBottom: 10
   },

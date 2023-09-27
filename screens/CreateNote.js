@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useState } from 'react';
+import React, { useLayoutEffect, useState, Dimensions } from 'react';
 import { View, Text, TextInput, StyleSheet, Pressable } from 'react-native';
 import IconButton from '../components/IconButton';
 import {createTodo} from '../src/graphql/mutations.js';
@@ -9,6 +9,8 @@ const CreateNote = ({ navigation }) => {
   const initialFormState = {name: '', description: ''};
   const [formState, setFormState] = useState(initialFormState);
   const [todos, setTodos] = useState([]);
+
+
 
   async function addTodo() {
     try {
@@ -37,18 +39,14 @@ const SignOutButton = () => {
     setFormState({...formState, [key]: value});
   }
 
-  const headerButtonPressHandler = () => {
-    console.log('pressed!')
-  }
-
   useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => {
         return (
           <IconButton
-          icon='checkmark-outline'
-          color='green'
-          onPress={headerButtonPressHandler}
+            icon='checkmark-outline'
+            color='green'
+            onPress={addTodo}
           />
         )
       }
@@ -56,34 +54,24 @@ const SignOutButton = () => {
   })
 
   return (
-    <View>
-      {/* <TextInput
-        //value='Title'
-        style={styles.title}
-        placeholder='ADD TITLE...'
-        placeholderTextColor='rgb(105, 105, 105)'
-      />
+    <View style={styles.container}>
       <TextInput
-        //value='Title'
-        style={styles.title}
-        placeholder='ADD DESCRIPTION...'
-        placeholderTextColor='rgb(105, 105, 105)'
-      /> */}
-      <TextInput
+        multiline
         onChangeText={value => setInput('name', value)}
-        style={styles.input}
+        style={[styles.input, styles.title]}
         value={formState.name}
-        placeholder="Name"
+        placeholder="Title"
+        placeholderTextColor='rgb(158, 158, 158)'
       />
+
       <TextInput
+      multiline
         onChangeText={value => setInput('description', value)}
-        style={styles.input}
+        style={[styles.input, styles.description]}
         value={formState.description}
-        placeholder="Description"
+        placeholder="Note"
+        placeholderTextColor='rgb(158, 158, 158)'
       />
-      <Pressable onPress={addTodo} style={styles.buttonContainer}>
-        <Text style={styles.buttonText}>Create todo</Text>
-      </Pressable>
     </View>
   );
 };
@@ -91,18 +79,20 @@ const SignOutButton = () => {
 export default CreateNote;
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 10,
+    backgroundColor: 'white'
+  },
+  input: {
+    padding: 8,
+    fontSize: 18,
+  },
+  description: {
+    height: 300,
+    verticalAlign: 'top'
+  },
   title: {
-    height: 40,
-    margin: 12,
-  },
-  container: {width: 400, flex: 1, padding: 20, alignSelf: 'center'},
-  todo: {marginBottom: 15},
-  input: {backgroundColor: '#ddd', marginBottom: 10, padding: 8, fontSize: 18},
-  todoName: {fontSize: 20, fontWeight: 'bold'},
-  buttonContainer: {
-    alignSelf: 'center',
-    backgroundColor: 'black',
-    paddingHorizontal: 8,
-  },
-  buttonText: {color: 'white', padding: 16, fontSize: 18},
+    fontSize: 24,
+  }
 })

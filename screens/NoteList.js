@@ -8,7 +8,7 @@ import { Amplify } from 'aws-amplify';
 import awsExports from '../src/aws-exports';
 Amplify.configure(awsExports);
 
-const NoteList = ({navigation, route }) => {
+const NoteList = ({navigation }) => {
   const [todos, setTodos] = useState([]);
 
   useEffect(() => {
@@ -58,6 +58,8 @@ const styles = StyleSheet.create({
   container: {
     display: 'flex',
     flex: 1,
+    margin: 5,
+    backgroundColor: 'white'
   },
   touchableOpacityStyle: {
     position: 'absolute',
